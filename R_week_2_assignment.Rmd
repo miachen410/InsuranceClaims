@@ -1,0 +1,71 @@
+---
+title: "R_week_2_assignment"
+author: "MiaC"
+date: "January 4, 2019"
+output: html_document
+---
+
+```{r}
+# Read insurace.csv file from github and store it in a data frame.
+insurance <- read.csv("https://raw.githubusercontent.com/miachen410/InsuranceClaims/master/Insurance.csv")
+```
+```{r}
+# 1. Use the summary function to gain an overview of the data set. Then display the mean and median for at least two attributes.
+summary(insurance)
+cat("\n") #print a blank line
+
+# Print average number of policyholders
+avgHolders <- round(mean(insurance$Holders), 2)
+paste("Average number of policyholders is", avgHolders)
+
+# Print median number of policyholders
+medHolders <- median(insurance$Holders)
+paste("Median number of policyholders is", medHolders)
+
+# Print average insurance claims 
+avgClaims <- round(mean(insurance$Claims), 2)
+paste("Average number of insurance claims is", avgClaims)
+
+# Print median insurance claims 
+medClaims <- median(insurance$Claims)
+paste("Median number of insurance claims is", medClaims)
+```
+```{r}
+# 2. Create a new data frame with a subset of the columns and rows. Make sure to rename it.
+# Subset groups of policyholders under age 25 that have at least 30 members
+young <- subset(insurance, Age == "<25" & Holders >= 30)
+young
+```
+```{r}
+# 3. Create new column names for the new data frame.
+names(young) <- c("Y", "YDistrict", "YGroup", "YAge", "YHolders", "YClaims")
+young
+```
+```{r}
+# 4. Use the summary function to create an overview of your new data frame. Then print the mean and median for the same two attributes. Please compare.
+summary(young)
+cat("\n") #print a blank line
+
+# Print and compare average number of young policyholders with the overall average
+avgYholders <- round(mean(young$YHolders), 2)
+paste("Average number of young policyholders is", avgYholders, ifelse(avgYholders<avgHolders, ", less than average", ", more than or equal to average"), avgHolders)
+
+# Print and compare median number of young policyholders with the overall median
+medYholders <- median(young$YHolders)
+paste("Median number of young policyholders is", medYholders, ifelse(medYholders<=medHolders, ", less than median", ", more than or equal to median"), medHolders)
+
+# Print and compare average claims from young policyholders with the overall average claims
+avgYclaims <- round(mean(young$YClaims), 2)
+paste("Average insurance claims from young group is", avgYclaims, ifelse(avgYclaims<avgClaims, ", less than average", ", more than or equal to average"), avgClaims)
+
+# Print and compare median claims from young policyholders with the overall media claims
+medYclaims <- median(young$YClaims)
+paste("Median insurance claims from young group is", medYclaims, ifelse(medYclaims<medClaims, ", less than average", ", more than or equal to average"), medClaims)
+```
+```{r}
+# 5. For at least 3 values in a column please rename so that every value in that column is renamed. 
+# Replace lowercase l with uppercase L for all values under the column "YGroup""
+young$YGroup <- gsub("l", "L", young$YGroup) 
+young
+```
+
